@@ -12,6 +12,6 @@ export const firebaseUiConfig = {
 };
 
 export const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_API_PATH,
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_API_PATH,
 };
