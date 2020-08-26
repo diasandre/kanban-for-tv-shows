@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import { StyledFirebaseAuth } from "react-firebaseui";
 import firebase from "firebase";
 import "./Login.css";
@@ -13,16 +13,21 @@ firebase.initializeApp(firebaseConfig);
 
 const Login = () => {
   const { push } = useHistory();
-  const { isLoading, setUserInfo } = useContext(UserContext);
+  const { user, setUserInfo } = useContext(UserContext);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    !isLoading ? push("/home") : push("/");
-  }, [push, isLoading]);
+    if (user) push("/home");
+  }, [push, user]);
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
+    const unregister = firebase.auth().onAuthStateChanged((user) => {
+      if (user == null) setLoading(false);
       setUserInfo({ user });
     });
+    return () => {
+      unregister();
+    };
   }, [setUserInfo]);
 
   return (

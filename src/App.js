@@ -16,7 +16,6 @@ function App() {
     <UserContextProvider
       value={{
         ...userInfo,
-        isLoading: userInfo.user == null,
         setUserInfo,
       }}
     >
