@@ -1,13 +1,12 @@
 import React, { useEffect, useContext, useState } from "react";
 import { StyledFirebaseAuth } from "react-firebaseui";
 import firebase from "firebase";
-import "./Login.css";
-import { Card } from "react-bootstrap";
 import LogoSvg from "./LogoSvg";
 import { UserContext } from "../../contexts/UserContext";
 import { useHistory } from "react-router-dom";
 import Loading from "../Loading";
 import { firebaseUiConfig, firebaseConfig } from "../../firebase-config";
+import { LoginCard, LoginContainer } from "./style";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -31,8 +30,8 @@ const Login = () => {
   }, [setUserInfo]);
 
   return (
-    <div className="login-container">
-      <Card body className="login-card">
+    <LoginContainer>
+      <LoginCard body>
         <LogoSvg />
         {!isLoading ? (
           <StyledFirebaseAuth
@@ -42,8 +41,8 @@ const Login = () => {
         ) : (
           <Loading />
         )}
-      </Card>
-    </div>
+      </LoginCard>
+    </LoginContainer>
   );
 };
 

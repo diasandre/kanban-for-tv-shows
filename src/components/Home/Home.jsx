@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import "./Home.css";
 import Kanban from "../Kanban";
+import { Header, KanbanContainer, Container } from "./style";
 
 const Home = () => {
   const { push } = useHistory();
@@ -13,10 +13,12 @@ const Home = () => {
   }, [push, user]);
 
   return (
-    <>
-      <div className="header-home" />
-      <Kanban />
-    </>
+    <Container>
+      <Header />
+      <KanbanContainer>
+        <Kanban />
+      </KanbanContainer>
+    </Container>
   );
 };
 

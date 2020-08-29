@@ -1,12 +1,12 @@
 import React from "react";
 import { Spinner } from "react-bootstrap";
-import "./Loading.css";
+import { LoadingContainer } from "./style";
 
 const Loading = () => {
   return (
-    <div className="loading-container">
+    <LoadingContainer>
       <Spinner animation="border" />
-    </div>
+    </LoadingContainer>
   );
 };
 

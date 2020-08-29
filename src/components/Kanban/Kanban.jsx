@@ -1,36 +1,59 @@
 import React, { useState } from "react";
 import Column from "./Column";
 import { DragDropContext } from "react-beautiful-dnd";
+import { getUpdatedColumn, hasToUpdate } from "../../helpers/columnUpdateHelper";
+import produce from "immer";
 
 const rawData = {
   items: {
-    "task-1": { id: "task-1", content: "Take out the garbage" },
-    "task-2": { id: "task-2", content: "Watch my favorite show" },
-    "task-3": { id: "task-3", content: "Charge my phone" },
-    "task-4": { id: "task-4", content: "Cook dinner" },
+    1: { id: "1", content: "Breaking bad" },
+    2: { id: "2", content: "Homeland" },
+    3: { id: "3", content: "Modern love" },
+    4: { id: "4", content: "Rick and Morty" },
+    5: { id: "5", content: "Friends" },
+    6: { id: "6", content: "Family guy" },
   },
   columns: {
-    "column-1": {
-      id: "column-1",
-      title: "To do",
-      ids: ["task-1", "task-2", "task-3", "task-4"],
+    1: {
+      id: "1",
+      title: "To watch",
+      ids: ["1", "2", "3", "4"],
+    },
+    2: {
+      id: "2",
+      title: "Watching",
+      ids: ["5", "6"],
     },
   },
-  columnOrder: ["column-1"],
+  columnOrder: ["1", "2"],
 };
 
 const Kanban = () => {
   const [data, setData] = useState(rawData);
   const { items, columns, columnOrder } = data;
 
-  const onDragEnd = () => {};
+  const handleUpdate = (result) => {
+    if (hasToUpdate(result)) {
+      const updatedData = produce(data, (draft) => {
+        draft.columns = getUpdatedColumn(result, columns);
+      });
+      setData(updatedData);
+    }
+  };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
+    <DragDropContext onDragEnd={handleUpdate}>
       {columnOrder.map((columnId) => {
-        const column = columns[columnId];
-        const columnItems = column.ids.map((taskId) => items[taskId]);
-        return <Column key={column.id} column={column} items={columnItems} />;
+        const { title, ids } = columns[columnId];
+        const columnItems = ids.map((id) => items[id]);
+        return (
+          <Column
+            key={columnId}
+            id={columnId}
+            title={title}
+            items={columnItems}
+          />
+        );
       })}
     </DragDropContext>
   );
