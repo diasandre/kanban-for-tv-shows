@@ -10,6 +10,10 @@ export const KanbanContainer = styled.div`
 `;
 
 export const Header = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 10px;
   width: 100%;
   height: 70px;
   background-color: rgb(19 82 115);
