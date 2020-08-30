@@ -1,3 +1,3 @@
-import Column from "./Column";
+import ColumnWrapper from "./Column";
 
-export default Column;
+export default ColumnWrapper;

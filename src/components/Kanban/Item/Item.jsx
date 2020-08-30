@@ -2,20 +2,22 @@ import React from "react";
 import { Container } from "./style";
 import { Draggable } from "react-beautiful-dnd";
 
-const Item = ({ id, index, content }) => {
+const ItemWrapper = ({ id, index, content }) => {
   return (
     <Draggable key={id} draggableId={id} index={index}>
-      {(provided, snapshot) => (
-        <Container
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-        >
-          {content}
-        </Container>
-      )}
+      {(provided) => <Item content={content} provided={provided} />}
     </Draggable>
   );
 };
 
-export default Item;
+const Item = React.memo(
+  ({ content, provided: { draggableProps, dragHandleProps, innerRef } }) => {
+    return (
+      <Container {...draggableProps} {...dragHandleProps} ref={innerRef}>
+        {content}
+      </Container>
+    );
+  }
+);
+
+export default ItemWrapper;

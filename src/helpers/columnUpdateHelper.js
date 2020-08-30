@@ -8,7 +8,7 @@ export const hasToUpdate = ({ destination, source }) => {
 };
 
 export const getUpdatedColumn = (
-  { destination, source, draggableId },
+  { destination, source, type, draggableId },
   columns
 ) => {
   if (source.droppableId === destination.droppableId) {
@@ -68,4 +68,14 @@ const generateColumn = (column, ids) => {
     ...column,
     ids,
   };
+};
+
+export const updateColumnOrder = (
+  { destination, source, draggableId },
+  columnOrder
+) => {
+  const newColumnOrder = Array.from(columnOrder);
+  newColumnOrder.splice(source.index, 1);
+  newColumnOrder.splice(destination.index, 0, draggableId);
+  return newColumnOrder;
 };

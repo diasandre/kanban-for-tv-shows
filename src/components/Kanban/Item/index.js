@@ -1,3 +1,3 @@
-import Item from "./Item";
+import ItemWrapper from "./Item";
 
-export default Item;
+export default ItemWrapper;

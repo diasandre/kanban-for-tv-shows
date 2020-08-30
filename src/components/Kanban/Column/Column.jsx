@@ -1,27 +1,35 @@
 import React from "react";
 import { Container, Title, List } from "./style";
-import Item from "../Item";
-import { Droppable } from "react-beautiful-dnd";
+import ItemWrapper from "../Item";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
-const Column = ({ id, title, items }) => {
+const ColumnWrapper = ({ id, title, index, items }) => {
   return (
-    <Container>
-      <Title>{title}</Title>
-      <Droppable droppableId={id}>
+    <Draggable draggableId={id} index={index}>
+      {(provided) => (
+        <Column id={id} title={title} items={items} provided={provided} />
+      )}
+    </Draggable>
+  );
+};
+
+const Column = ({
+  id,
+  title,
+  items,
+  provided: { draggableProps, dragHandleProps, innerRef },
+}) => {
+  return (
+    <Container {...draggableProps} ref={innerRef}>
+      <Title {...dragHandleProps}>{title}</Title>
+      <Droppable droppableId={id} type="item">
         {(provided, snapshot) => (
           <List
             ref={provided.innerRef}
             isDraggingOver={snapshot.isDraggingOver}
             {...provided.droppableProps}
           >
-            {items.map((item, index) => (
-              <Item
-                key={item.id}
-                id={item.id}
-                index={index}
-                content={item.content}
-              />
-            ))}
+            <ColumnItems items={items} />
             {provided.placeholder}
           </List>
         )}
@@ -30,4 +38,19 @@ const Column = ({ id, title, items }) => {
   );
 };
 
-export default Column;
+const ColumnItems = React.memo(({ items }) => {
+  return (
+    <>
+      {items.map((item, index) => (
+        <ItemWrapper
+          key={item.id}
+          id={item.id}
+          index={index}
+          content={item.content}
+        />
+      ))}
+    </>
+  );
+});
+
+export default ColumnWrapper;
