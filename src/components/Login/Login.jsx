@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import Loading from "../Loading";
 import { firebaseUiConfig, firebaseConfig } from "../../firebase-config";
 import { LoginCard, LoginContainer } from "./style";
+import { getOrCreate } from "../../services/userService";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -22,7 +23,11 @@ const Login = () => {
   useEffect(() => {
     const unregister = firebase.auth().onAuthStateChanged((user) => {
       if (user == null) setLoading(false);
-      setUserInfo({ user });
+      getOrCreate(user)
+        .then(({ data }) => {
+          setUserInfo({ user: { ...data, token: user.getIdToken } });
+        })
+        .catch((e) => console.error(e));
     });
     return () => {
       unregister();
