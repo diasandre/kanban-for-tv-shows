@@ -21,3 +21,9 @@ export const initialData = {
   },
   columnOrder: ["column-1", "column-2"],
 };
+
+export const defaultInitialData = {
+  items: null,
+  columns: null,
+  columnOrder: [],
+};

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import ColumnWrapper from "./Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
@@ -8,10 +8,13 @@ import {
 } from "../../helpers/columnUpdateHelper";
 import produce from "immer";
 import { Container } from "./style";
-import { initialData } from "../../initialData";
+import { load } from "../../services/kanbanService";
+import { UserContext } from "../../contexts/UserContext";
+import { defaultInitialData } from "../../initialData";
 
 const Kanban = () => {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(defaultInitialData);
+  const { user } = useContext(UserContext);
   const { items, columns, columnOrder } = data;
 
   const handleUpdate = (result) => {
@@ -40,14 +43,27 @@ const Kanban = () => {
     }
   };
 
+  const listColumnsByUser = useCallback(async () => {
+    const { data } = await load(user);
+    setData({
+      columns: data.columns,
+      items: data.items,
+      columnOrder: Object.keys(data.columns),
+    });
+  }, [user]);
+
+  useEffect(() => {
+    if (user != null) listColumnsByUser();
+  }, [listColumnsByUser, user]);
+
   return (
     <DragDropContext onDragEnd={handleUpdate}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
         {(provided) => (
           <Container {...provided.droppableProps} ref={provided.innerRef}>
             {columnOrder.map((columnId, index) => {
-              const { title, ids } = columns[columnId];
-              const columnItems = ids.map((id) => items[id]);
+              const { title, items: columnItemIds } = columns[columnId];
+              const columnItems = columnItemIds.map((id) => items[id]);
               return (
                 <ColumnWrapper
                   key={columnId}
