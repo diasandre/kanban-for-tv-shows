@@ -21,14 +21,19 @@ const Login = () => {
   }, [push, user]);
 
   useEffect(() => {
-    const unregister = firebase.auth().onAuthStateChanged((user) => {
-      if (user == null) setLoading(false);
-      getOrCreate(user)
-        .then(({ data }) => {
-          setUserInfo({ user: { ...data, token: user.getIdToken } });
-        })
-        .catch((e) => console.error(e));
-    });
+    const unregister = firebase
+      .auth()
+      .onAuthStateChanged((userFromFirebase) => {
+        if (userFromFirebase == null) setLoading(false);
+        userFromFirebase.getIdToken().then((result) => {
+          getOrCreate(result.token)
+            .then(({ data }) => {
+              // clean not necessary info from data
+              setUserInfo({ user: { ...data, token: result.token } });
+            })
+            .catch((e) => console.error(e));
+        });
+      });
     return () => {
       unregister();
     };

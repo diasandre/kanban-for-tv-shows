@@ -44,11 +44,11 @@ const Kanban = () => {
   };
 
   const listColumnsByUser = useCallback(async () => {
-    const { data } = await load(user);
+    const { data } = await load(user.token);
     setData({
       columns: data.columns,
       items: data.items,
-      columnOrder: Object.keys(data.columns),
+      columnOrder: user.columns,
     });
   }, [user]);
 

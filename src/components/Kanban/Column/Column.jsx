@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Title, List } from "./style";
 import ItemWrapper from "../Item";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Button } from "react-bootstrap";
 
 const ColumnWrapper = ({ id, title, index, items }) => {
   return (
@@ -30,6 +31,7 @@ const Column = ({
             {...provided.droppableProps}
           >
             <ColumnItems items={items} />
+            <Button variant="outline-secondary">+</Button>
             {provided.placeholder}
           </List>
         )}
