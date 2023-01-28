@@ -1,24 +1,24 @@
 import React, { useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
-import firebase from "firebase";
+import { useNavigate } from "react-router-dom";
+import firebase from "../../firebase-config";
 import { UserContext } from "../../contexts/UserContext";
 import Kanban from "../Kanban";
 import { Header, KanbanContainer, Container } from "./style";
 import { Dropdown, SplitButton } from "react-bootstrap";
 
 const Home = () => {
-  const { push } = useHistory();
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
   useEffect(() => {
-    if (!user) push("/");
-  }, [push, user]);
+    if (!user) navigate("/");
+  }, [navigate, user]);
 
   const logout = () =>
     firebase
       .auth()
       .signOut()
-      .then(() => push("/"));
+      .then(() => navigate("/"));
 
   return (
     <Container>
