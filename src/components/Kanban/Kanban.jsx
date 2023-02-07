@@ -57,28 +57,34 @@ const Kanban = () => {
   }, [listColumnsByUser, user]);
 
   return (
-    <DragDropContext onDragEnd={handleUpdate}>
-      <Droppable droppableId="all-columns" direction="horizontal" type="column">
-        {(provided) => (
-          <Container {...provided.droppableProps} ref={provided.innerRef}>
-            {columnOrder.map((columnId, index) => {
-              const { title, items: columnItemIds } = columns[columnId];
-              const columnItems = columnItemIds.map((id) => items[id]);
-              return (
-                <ColumnWrapper
-                  key={columnId}
-                  id={columnId}
-                  index={index}
-                  title={title}
-                  items={columnItems}
-                />
-              );
-            })}
-            {provided.placeholder}
-          </Container>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <DragDropContext onDragEnd={handleUpdate}>
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => (
+            <Container {...provided.droppableProps} ref={provided.innerRef}>
+              {columnOrder.map((columnId, index) => {
+                const { title, items: columnItemIds } = columns[columnId];
+                const columnItems = columnItemIds.map((id) => items[id]);
+                return (
+                  <ColumnWrapper
+                    key={columnId}
+                    id={columnId}
+                    index={index}
+                    title={title}
+                    items={columnItems}
+                  />
+                );
+              })}
+              {provided.placeholder}
+            </Container>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 };
 

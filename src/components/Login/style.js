@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Card } from "react-bootstrap";
+import Card from "@mui/material/Card";
 
 export const LoginContainer = styled.div`
   display: flex;
